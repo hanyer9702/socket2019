@@ -7,6 +7,9 @@
 
 char buffer[100];
 char rcvBuffer[100];
+char c1[50]="";
+char c2[50]="";
+char *ptr;
 
 int main(){
 	int c_socket, s_socket;
@@ -53,6 +56,21 @@ int main(){
 				break;
 			if(strncasecmp(rcvBuffer,"strlen",6)==0){
 				n=strlen(rcvBuffer)-7;
+				sprintf(rcvBuffer,"%d",n);
+			}
+			if(strncasecmp(rcvBuffer,"strcmp",6)==0){
+				
+				ptr=strtok(rcvBuffer," ");
+				
+
+				while(ptr !=NULL){
+						
+					strcpy(c1,c2);
+					strcpy(c2,ptr);
+					ptr=strtok(NULL," ");
+				}
+				
+				n=strcmp(c1,c2);
 				sprintf(rcvBuffer,"%d",n);
 			}
 			if(strcmp(rcvBuffer,"안녕하세요.")==0)
