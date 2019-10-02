@@ -47,11 +47,14 @@ int main(){
 		printf("/client is connected\n");
 		printf("클라이언트 접속 허용\n");
 		while(1){
-			strcmp(rcvBuffer,"");
 			read(c_socket, rcvBuffer, sizeof(rcvBuffer));
 			printf("rcvBuffer: %s\n",rcvBuffer);
 			if(strncasecmp(rcvBuffer,"quit",4)==0 || strncasecmp(rcvBuffer,"kill server",11)==0)
 				break;
+			if(strncasecmp(rcvBuffer,"strlen",6)==0){
+				n=strlen(rcvBuffer)-7;
+				sprintf(rcvBuffer,"%d",n);
+			}
 			if(strcmp(rcvBuffer,"안녕하세요.")==0)
 				strcpy(rcvBuffer,"안녕하세요. 만나서 반가워요.");
 			else if(strcmp(rcvBuffer,"이름이 뭐야?")==0)
