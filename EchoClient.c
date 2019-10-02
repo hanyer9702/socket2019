@@ -12,8 +12,8 @@ int main(){
 	struct sockaddr_in c_addr;
 	int n;
 	char rcvBuffer[BUFSIZE];//서버에서 보내준 메세지를 저장하는 변수
-	char sendBuffer[BUFSIZE] = "Hi, I'm client.";
-	//1. 클라이언트 소켓 생성
+	char sendBuffer[BUFSIZE];
+
 	c_socket = socket(PF_INET, SOCK_STREAM, 0); //서버와 동일한 설정으로 생성
 	//2.소켓 정보 초기화
 	memset(&c_addr, 0, sizeof(c_addr));
@@ -32,9 +32,10 @@ int main(){
 	{
 		//4. 서버에 메시지 보내기
 		//키보드로부터 메세지 입력 받기
-		fgets(sendBuffer, sizeof(sendBuffer),stdin);
+		fgets(sendBuffer,100,stdin);
+		sendBuffer[strlen(sendBuffer)-1]='\0';
 		//서버로 메세지 전송
-		write(c_socket, sendBuffer, strlen(sendBuffer));
+		write(c_socket, sendBuffer, sizeof(sendBuffer));
 		//입력받은 메세지가  quit이면 break
 		if(strncasecmp(sendBuffer,"quit",4)==0 || strncasecmp(sendBuffer,"kill server",11)==0)
 			break;
@@ -48,7 +49,7 @@ int main(){
 		}
 		rcvBuffer[n] = '\0'; //문자열 뒷부분 깨짐 방지
 		printf("received data: %s\n", rcvBuffer); //서버에서 받은 메세지 출력
-		printf("rcvBuffer length: %d\n", n); //3-2. 서버에섭 다은 메세지의 길이 출력 
+		strcmp(sendBuffer,"");
 	}
 	close(c_socket);
 	return 0;	

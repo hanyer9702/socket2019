@@ -5,7 +5,7 @@
 
 #define PORT 10000
 
-char buffer[100] = "Hi, I'm Server\n";
+char buffer[100];
 char rcvBuffer[100];
 
 int main(){
@@ -47,11 +47,18 @@ int main(){
 		printf("/client is connected\n");
 		printf("클라이언트 접속 허용\n");
 		while(1){
-			n = read(c_socket, rcvBuffer, sizeof(rcvBuffer));
+			strcmp(rcvBuffer,"");
+			read(c_socket, rcvBuffer, sizeof(rcvBuffer));
 			printf("rcvBuffer: %s\n",rcvBuffer);
 			if(strncasecmp(rcvBuffer,"quit",4)==0 || strncasecmp(rcvBuffer,"kill server",11)==0)
 				break;
-			write(c_socket, rcvBuffer, n); //클라이언트에게 buffer의 내용을 전송함
+			if(strcmp(rcvBuffer,"안녕하세요.")==0)
+				strcpy(rcvBuffer,"안녕하세요. 만나서 반가워요.");
+			else if(strcmp(rcvBuffer,"이름이 뭐야?")==0)
+				strcpy(rcvBuffer,"내 이름은 han이야.");
+			else if(strcmp(rcvBuffer,"몇 살이야?")==0)
+				strcpy(rcvBuffer,"나는 23살이야.");
+			write(c_socket, rcvBuffer, sizeof(rcvBuffer)); //클라이언트에게 buffer의 내용을 전송함
 		}
 
 		close(c_socket);
