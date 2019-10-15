@@ -15,6 +15,7 @@ int main(){
 	struct sockaddr_in s_addr, c_addr;
 	int len;
 	int n;
+	
 
 	// 1. 서버 소켓 생성
 	//서버 소켓 = 클라이언트의 접속 요청을 처리(허용)해 주기 위한 소켓
@@ -51,6 +52,7 @@ int main(){
 		while(1){
 			n = read(c_socket, rcvBuffer, sizeof(rcvBuffer));
 			printf("rcvBuffer: %s\n",rcvBuffer);
+			//rcvBuffer[n-1] = '\0'; 개행 문자 삭제
 			if(strncasecmp(rcvBuffer,"quit",4)==0 || strncasecmp(rcvBuffer,"kill server",11)==0)
 				break;
 			else if(!strncasecmp(rcvBuffer, "안녕하세요",strlen("안녕하세요")))
@@ -59,6 +61,28 @@ int main(){
 				strcpy(buffer, "내 이름은 Bot이야.");
 			else if(!strncasecmp(rcvBuffer, "몇 살이야?",strlen("몇 살이야?")))
 				strcpy(buffer, "나는 10살이야");
+			else if(!strncasecmp(rcvBuffer, "strlen ",strlen("strlen ")))
+				//문자열의 길이는 XX입니다.
+				sprintf(buffer, "문자열의 길이는 %d입니다.",strlen(rcvBuffer)-7);
+			else if(!strncasecmp(rcvBuffer, "strcmp ",strlen("strcmp "))){
+				char *token;
+				char *str[3];
+				int idx = 0;
+				
+				token = strtok(rcvBuffer, " ");
+				while(token != NULL){
+					str[idx] = token;
+					printf("str[%d] = %s\n", idx, str[idx]);
+					idx++;
+					token = strtok(NULL, " ");
+				}
+				if(idx < 3)
+					strcpy(buffer, "문자열 비교를 위해서는 두 문자열이 필요합니다.");
+				else if(!strcmp(str[1], str[2])) //같은 문자열이면 
+					sprintf(buffer, "%s와 %s는 같은 문자열입니다.",str[1], str[2]);
+				else
+					sprintf(buffer, "%s와 %s는 다른 문자열입니다.",str[1], str[2]);
+			}
 			else
 				strcpy(buffer, "무슨 말인지 모르겠습니다.");
 			
