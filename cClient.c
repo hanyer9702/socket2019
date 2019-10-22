@@ -5,7 +5,7 @@
 
 #define PORT 10000
 #define IPADDR "127.0.0.1"
-#define BUFSIZE 1000
+#define BUFSIZE 10000
 
 int main(){
 	int c_socket; 
@@ -32,6 +32,7 @@ int main(){
 	{
 		//4. 서버에 메시지 보내기
 		//키보드로부터 메세지 입력 받기
+		printf("Input your message\n");
 		fgets(sendBuffer,100,stdin);
 		sendBuffer[strlen(sendBuffer)-1]='\0';
 		//서버로 메세지 전송
