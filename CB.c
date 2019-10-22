@@ -106,7 +106,7 @@ int main(){
 					} else //해달 파일이 없는 경우,
 						strcpy(buffer, "해당 파일은 존재하지 않습니다.");
 					}			
-				 } else if(!strncasecmp(rcvBuffer, "exec", 5)) {
+				 } else if(!strncasecmp(rcvBuffer, "exec ", 5)) {
 					char *command;
 					char *token;
 					token = strtok(rcvBuffer, " "); //token = exec
