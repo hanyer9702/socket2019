@@ -38,9 +38,9 @@ int main(int argc, char *argv[ ])
         return -1;
     }
     //pthread_create with do_send function
-	pthread_create(&thread_1,NULL,do_send_chat,(void *)c_socket);
+	pthread_create(&thread_1,NULL,do_send_chat,(void *)&c_socket);
     //pthread_create with do_receive_chat function
-	pthread_create(&thread_2,NULL,do_receive_chat,(void *)c_socket);
+	pthread_create(&thread_2,NULL,do_receive_chat,(void *)&c_socket);
     //pthread_join both threads
 	pthread_join(thread_1,(void **)&status);
 	pthread_join(thread_2,(void **)&status);
