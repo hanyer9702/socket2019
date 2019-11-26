@@ -16,9 +16,12 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 #define PORT 9000
 int    list_c[MAX_CLIENT];
 int		count = 0;
+int tcount;
 char    escape[ ] = "exit";
 char    greeting[ ] = "Welcome to chatting room\n";
 char    CODE200[ ] = "Sorry No More Connection\n";
+char name[10][100];
+char nickname[100];
 int main(int argc, char *argv[ ])
 {
     int c_socket, s_socket;
@@ -54,6 +57,8 @@ int main(int argc, char *argv[ ])
             close(c_socket);
         } else {
             write(c_socket, greeting, strlen(greeting));
+				read(c_socket, nickname, 20 );
+				strcpy(name[tcount],nickname);
             //pthread_create with do_chat function.
 				pthread_create(&thread,NULL,do_chat,(void *)&c_socket);
         }
@@ -67,10 +72,22 @@ void *do_chat(void *arg)
     while(1) {
         memset(chatData, 0, sizeof(chatData));
         if((n = read(c_socket, chatData, sizeof(chatData))) > 0) {
+			if(!strncmp(chatData,"/w",sizeof("/w"))){
+				char *token;
+				char tname[100];
+				int i;
+				token=strtok(chatData," ");
+				token=strtok(NULL," ");
+				for(i=0;i<count;i++){
+					if(!strcmp(token,name[i]))
+						write(list_c[i],chatData,sizeof(chatData));
+				}
+			}else{
             //write chatData to all clients
 				for(i=0;i<count;i++){
 					write(list_c[i],chatData,sizeof(chatData));
 				}
+			}
             if(strstr(chatData, escape) != NULL) {
                 popClient(c_socket);
                 break;
@@ -83,6 +100,7 @@ int pushClient(int c_socket) {
 	//return -1, if list_c is full.
 	if(count<MAX_CLIENT){
 		list_c[count]=c_socket;
+		count=tcount;
 		pthread_mutex_lock(&mutex);
 		count++;
 		pthread_mutex_unlock(&mutex);

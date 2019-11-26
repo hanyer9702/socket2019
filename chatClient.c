@@ -73,6 +73,9 @@ void *do_receive_chat(void *arg)
         memset(chatData, 0, sizeof(chatData));
         if((n = read(c_socket, chatData, sizeof(chatData))) > 0 ) {
             write(1, chatData, n); //chatData를 화면에 출력함 (1 = stdout (모니터))
+			if(!strncasecmp(chatData,"welcome",sizeof("welcome"))){
+				write(c_socket, nickname, strlen(nickname));
+			}
         }
     }
 }
