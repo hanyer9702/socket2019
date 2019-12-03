@@ -76,30 +76,6 @@ void *do_chat(void *arg)
     while(1) {
         memset(chatData, 0, sizeof(chatData));
         if((n = read(c_socket, chatData, sizeof(chatData))) > 0) {
-            //write chatData to all clients
-			//if(!strncmp(chatData,"/w ",sizeof("/w "))){
-			//	char *token;
-			//	char tname[20];
-			//	int i;
-			//	token = strtok(chatData," ");
-			//	token = strtok(NULL," ");
-			//	for(i=0;i<count;i++){
-			//		if(!strcmp(token,list_c[i].name)){
-			//			token = strtok(NULL,"\0");
-			//			sprintf(chatData,"[%s] %s ",list_c[i].name,chatData);
-			//			write(list_c[i].socket,chatData,sizeof(chatData));
-			//		}
-			//		else{
-				//		sprintf(chatData,"%d %s %s ",strcmp(token,list_c[i].name),token,list_c[i].name);
-				//		write(list_c[i].socket,chatData,sizeof(chatData));
-				//	}
-				//}
-			//} else 
-			//{
-			//	for(i=0;i<count;i++){
-			//		write(list_c[i].socket,chatData,sizeof(chatData));
-			//	}
-			//}
 			if(!strncmp(chatData,"/w ",strlen("/w ")))
 			{
 				char *tempS;
@@ -108,9 +84,6 @@ void *do_chat(void *arg)
 				tempS = strtok(NULL," ");
 				for(i=0;i<count;i++)
 				{
-					//sprintf(temp,"%d %s ",count, list_c[i].name);
-					//write(list_c[i].socket,temp,sizeof(list_c[i].name));
-					//write(list_c[i].socket,tempname,sizeof(tempname));
 					if(!strcmp(tempS,list_c[i].name))
 					{
 						for(j=0;j<count;j++){
@@ -128,7 +101,6 @@ void *do_chat(void *arg)
 				for(i=0;i<count;i++)
 				{
 					write(list_c[i].socket,chatData,sizeof(chatData));
-					//write(list_c[i].socket,list_c[i].name,sizeof(list_c[i].name));
 				}
 			}
 
@@ -167,6 +139,7 @@ int popClient(int c_socket)
 					break;
 				if(j!=count){
 					list_c[j].socket=list_c[j+1].socket;
+					strcpy(list_c[j].name,list_c[j+1].name);
 				}
 			}
 		}
